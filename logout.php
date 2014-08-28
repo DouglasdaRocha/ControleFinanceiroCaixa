@@ -1,5 +1,5 @@
 <?php
-session_start(); // Inicia a sessão
-unset($_SESSION['usuario']); // Deleta uma variável da sessão
-session_destroy(); // Destrói toda sessão
+session_start();
+unset($_SESSION['usuario']);
+session_destroy();
 header("Location: login.html");

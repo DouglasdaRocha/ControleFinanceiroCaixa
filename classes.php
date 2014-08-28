@@ -11,7 +11,7 @@ class Postgres extends BancoDados
 	public function conectar($host, $usuario, $senha, $banco, $porta)
 	{
 		$conexao = pg_connect("host=$host port=$porta dbname=$banco user=$usuario password=$senha")
- 			or die ("Não foi possivel conectar ao servidor PostGreSQL");
+ 	    	or die ("Não foi possivel conectar ao servidor PostGreSQL");
 	}
 
 	public function consultar($sql)
@@ -26,20 +26,25 @@ class Postgres extends BancoDados
 	}
 }
 
-class Tabela {
+class Tabela 
+{
 	private $bancoDados;
 
-	public function __construct($bancoDados){
+	public function __construct($bancoDados)
+	{
 		return $this->bancoDados = $bancoDados;
 	}
 
-	public function getBancoDados() {
+	public function getBancoDados() 
+	{
 		return $this->bancoDados;
 	}
 }
 
-class TabelaUsuario extends Tabela {
-	public function buscarUsuario($login) {
+class TabelaUsuario extends Tabela 
+{
+	public function buscarUsuario($login) 
+	{
 		$resultado = $this->getBancoDados()->consultar('select * from usuario');
 
 		$usuarios = array();
@@ -56,16 +61,17 @@ class TabelaUsuario extends Tabela {
 	}
 }
 
-class TabelaCaixa extends Tabela {
-
-	public function salvarCaixa($caixa) {
+class TabelaCaixa extends Tabela 
+{
+	public function salvarCaixa($caixa) 
+	{
 		$sql = "INSERT INTO caixa (id_caixa, entrada, saida, total)
         VALUES (default, '". $caixa->getEntrada() ."', '". $caixa->getSaida() ."', '". $caixa->getTotal() ."');";
-
         $this->getBancoDados()->consultar($sql);
 	}
 
-	public function buscarCaixa() {
+	public function buscarCaixa() 
+	{
 		$resultado = $this->getBancoDados()->consultar('
 			select 			
 			entrada::money::numeric::float8,
@@ -78,8 +84,8 @@ class TabelaCaixa extends Tabela {
 	}
 }
 
-class Validador {
-
+class Validador 
+{
 	private $tabelaUsuario;
 
 	public function __construct($tabelaUsuario)
@@ -90,28 +96,26 @@ class Validador {
 
 	public function validar($usuario, $senha)
 	{
-		
 		$result = $this->tabelaUsuario->buscarUsuario($usuario);
 
-			if (!$result) {
-		  		echo "Erro na consulta.<br>";
-		  		exit;
+		if (!$result) {
+		  	echo "Erro na consulta.<br>";
+		  	exit;
 		}
 
-			foreach ($result as $value) {
-				if ($usuario == $value->getNome() && $senha == $value->getSenha()) {
-					session_start(); // Inicia a sessão
-					$_SESSION['usuario'] = $usuario;
-					header("Location: index.php");exit;
-				}
+		foreach ($result as $value) {
+			if ($usuario == $value->getNome() && $senha == $value->getSenha()) {
+				session_start();
+				$_SESSION['usuario'] = $usuario;
+				header("Location: index.php");exit;
 			}
-			header("Location: login.html");
-
+		}
+		header("Location: login.html");
 	}
 }
 
-class Usuario {
-
+class Usuario 
+{
 	private $id;
 	private $nome;
 	private $senha;
@@ -147,8 +151,8 @@ class Usuario {
 	}
 }
 
-class Caixa {
-
+class Caixa 
+{
 	private $id;
 	private $entrada;
 	private $saida;

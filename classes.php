@@ -13,7 +13,7 @@ class Postgres extends BancoDados
 		$conexao = pg_connect("host=$host port=$porta dbname=$banco user=$usuario password=$senha")
  	    	or die ("Não foi possivel conectar ao servidor PostGreSQL");
 	}
-
+ 
 	public function consultar($sql)
 	{
 		$consulta = pg_query($sql);
